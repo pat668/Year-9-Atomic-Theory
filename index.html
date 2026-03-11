@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Atomic Structure & Nuclear Reactions Quiz</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a0a1a 0%, #0d1b2a 50%, #0a0a1a 100%);
+    font-family: Georgia, serif;
+    color: #e2e8f0;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-8px)} 80%{transform:translateX(8px)} }
+  @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.08)} 100%{transform:scale(1)} }
+  @keyframes fadein { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .screen { max-width: 960px; width: 100%; animation: fadein 0.4s ease; }
+  .hidden { display: none; }
+  .option-btn {
+    transition: all 0.18s ease; cursor: pointer; border: none; width: 100%;
+    text-align: left; padding: 18px 24px; border-radius: 12px; font-size: 19px;
+    font-family: Georgia, serif; margin-bottom: 12px; display: block;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1;
+    line-height: 1.5;
+  }
+  .option-btn:hover:not(:disabled) { transform: translateX(4px); background: rgba(255,255,255,0.08); }
+  .option-btn.correct { background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #6ee7b7; }
+  .option-btn.wrong { background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #fca5a5; }
+  .option-btn.dim { opacity: 0.4; }
+  .section-btn {
+    transition: all 0.2s ease; cursor: pointer; border: none; padding: 13px 22px;
+    border-radius: 8px; font-size: 16px; font-family: Georgia, serif; font-weight: bold;
+    margin: 5px;
+  }
+  .section-btn:hover { transform: translateY(-2px); filter: brightness(1.2); }
+  .big-btn {
+    width: 100%; padding: 22px; border: none; border-radius: 14px; color: #fff;
+    font-size: 20px; font-family: Georgia, serif; font-weight: bold; cursor: pointer;
+    background: linear-gradient(135deg, #06b6d4, #a78bfa); transition: transform 0.2s;
+    margin-top: 10px;
+  }
+  .big-btn:hover { transform: scale(1.02); }
+  .next-btn {
+    background: linear-gradient(135deg, #06b6d4, #a78bfa); border: none;
+    padding: 14px 48px; border-radius: 12px; color: #fff; font-size: 18px;
+    font-family: Georgia, serif; cursor: pointer; font-weight: bold; margin-top: 14px;
+    display: block; margin-left: auto; margin-right: auto;
+  }
+  .card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 28px 34px; margin-bottom: 22px;
+  }
+  .progress-bar-wrap { height: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 28px; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, #06b6d4, #a78bfa); border-radius: 4px; transition: width 0.4s ease; }
+  .score-badge { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.35); color: #10b981; padding: 6px 16px; border-radius: 20px; font-size: 16px; }
+  .section-tag { font-size: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; }
+  .counter { font-size: 16px; color: #64748b; }
+  .question-text { font-size: 22px; line-height: 1.7; color: #f1f5f9; }
+  .result-pct { font-size: 72px; font-weight: bold; margin: 10px 0; }
+  .result-grade { font-size: 32px; color: #fff; margin-bottom: 8px; }
+  .result-sub { color: #94a3b8; margin-bottom: 28px; font-size: 18px; }
+  .topic-label { font-size: 16px; margin-bottom: 6px; }
+  .topic-bar-wrap { height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; margin-bottom: 14px; }
+  .topic-bar { height: 100%; border-radius: 4px; }
+  .wrong-item { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .wrong-q { font-size: 16px; color: #e2e8f0; margin-bottom: 6px; }
+  .wrong-yours { font-size: 15px; color: #fca5a5; margin-bottom: 4px; }
+  .wrong-correct { font-size: 15px; color: #6ee7b7; }
+  .flex-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .half-btn {
+    flex: 1; padding: 16px; border: none; border-radius: 12px; font-size: 18px;
+    font-family: Georgia, serif; cursor: pointer; font-weight: bold;
+  }
+  .half-btn-primary { background: linear-gradient(135deg, #06b6d4, #a78bfa); color: #fff; margin-right: 8px; }
+  .half-btn-secondary { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); color: #e2e8f0; }
+  h1 { font-size: 42px; font-weight: bold; color: #fff; letter-spacing: -1px; margin-bottom: 10px; }
+  h2.subtitle { font-size: 24px; font-weight: normal; color: #06b6d4; margin-bottom: 14px; }
+  .meta { color: #94a3b8; font-size: 17px; margin-bottom: 36px; }
+  .atom-bg { position: fixed; top: 20px; right: 30px; opacity: 0.06; pointer-events: none; width: 140px; height: 140px; }
+  .review-header { font-size: 17px; color: #fca5a5; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+  .shake { animation: shake 0.4s ease; }
+  .pop { animation: pop 0.4s ease; }
+  #home-screen { text-align: center; padding-top: 24px; }
+  .emoji-big { font-size: 56px; margin-bottom: 10px; }
+  .topic-section { text-align: left; }
+  .topic-title { font-size: 16px; text-transform: uppercase; letter-spacing: 0.08em; color: #e2e8f0; margin-bottom: 16px; }
+  .section-btns-wrap { display: flex; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<svg class="atom-bg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="60" cy="60" rx="55" ry="55" stroke="#06b6d4" stroke-width="2"/>
+  <ellipse cx="60" cy="60" rx="55" ry="55" stroke="#a78bfa" stroke-width="2" transform="rotate(60 60 60)"/>
+  <ellipse cx="60" cy="60" rx="55" ry="55" stroke="#ec4899" stroke-width="2" transform="rotate(120 60 60)"/>
+  <circle cx="60" cy="60" r="8" fill="#f97316"/>
+</svg>
+
+<div id="home-screen" class="screen">
+  <div class="emoji-big">⚛️</div>
+  <h1>Atomic Structure</h1>
+  <h2 class="subtitle">& Nuclear Reactions Quiz</h2>
+  <p class="meta">46 questions · 9th Grade Science · Test Preparation</p>
+  <div class="card topic-section">
+    <div class="topic-title">Practice by Topic</div>
+    <div class="section-btns-wrap" id="section-btns"></div>
+  </div>
+  <button class="big-btn" onclick="startQuiz('all')">🚀 Full Quiz — All Topics (46 Questions)</button>
+</div>
+
+<div id="quiz-screen" class="screen hidden">
+  <div class="flex-row" style="margin-bottom:18px;">
+    <span id="section-tag" class="section-tag"></span>
+    <span id="q-counter" class="counter"></span>
+  </div>
+  <div class="progress-bar-wrap"><div id="progress-bar" class="progress-bar" style="width:0%"></div></div>
+  <div style="text-align:right; margin-bottom:18px;">
+    <span id="score-badge" class="score-badge">✓ 0 correct</span>
+  </div>
+  <div id="question-card" class="card">
+    <p id="question-text" class="question-text"></p>
+  </div>
+  <div id="options-container"></div>
+  <div style="text-align:center;">
+    <button id="next-btn" class="next-btn hidden" onclick="nextQuestion()">Next →</button>
+  </div>
+</div>
+
+<div id="results-screen" class="screen hidden">
+  <div style="text-align:center; margin-bottom:32px;">
+    <div id="result-emoji" style="font-size:68px; margin-bottom:14px;"></div>
+    <div id="result-grade" class="result-grade"></div>
+    <div id="result-pct" class="result-pct"></div>
+    <div id="result-sub" class="result-sub"></div>
+  </div>
+  <div class="card">
+    <div class="topic-title">Performance by Topic</div>
+    <div id="topic-breakdown"></div>
+  </div>
+  <div id="wrong-answers-section" class="card hidden" style="border-color:rgba(239,68,68,0.25);background:rgba(239,68,68,0.04);">
+    <div class="review-header">📋 Review Incorrect Answers</div>
+    <div id="wrong-answers-list"></div>
+  </div>
+  <div style="display:flex;gap:12px;margin-top:10px;">
+    <button class="half-btn half-btn-primary" onclick="retryQuiz()">🔄 Try Again</button>
+    <button class="half-btn half-btn-secondary" onclick="goHome()">🏠 Home</button>
+  </div>
+</div>
+
+<script>
+const SECTION_COLORS={"Matter & Atoms":"#06b6d4","Atomic Models":"#a78bfa","Nuclear Reactions":"#f97316","Radioisotopes":"#ec4899","Half-Life":"#10b981","Uses of Radioisotopes":"#f59e0b"};
+const ALL_QUESTIONS=[
+  {q:"What is the atomic number (Z) of an atom?",options:["The number of neutrons","The number of protons","The mass of the nucleus","The number of electrons in the outer shell"],answer:1,section:"Matter & Atoms"},
+  {q:"What is the mass number (A) of an atom?",options:["Number of protons only","Number of neutrons only","Number of protons + neutrons","Number of electrons + protons"],answer:2,section:"Matter & Atoms"},
+  {q:"Carbon has 6 protons and 6 neutrons. What is its mass number?",options:["6","12","18","3"],answer:1,section:"Matter & Atoms"},
+  {q:"Which subatomic particle has a negative charge?",options:["Proton","Neutron","Electron","Alpha particle"],answer:2,section:"Matter & Atoms"},
+  {q:"What is the relative mass of an electron compared to a proton?",options:["1","2","1/1840","1/100"],answer:2,section:"Matter & Atoms"},
+  {q:"Where are protons and neutrons located in an atom?",options:["In the electron shells","In the nucleus","Orbiting the nucleus","Spread throughout the atom"],answer:1,section:"Matter & Atoms"},
+  {q:"How do electrons fill their shells?",options:["2, 4, 6, 8","1, 2, 3, 4","2, 8, 8, 2 (and beyond)","8, 8, 8, 8"],answer:2,section:"Matter & Atoms"},
+  {q:"Calcium has atomic number 20. What is its electron configuration?",options:["2, 8, 10","2, 8, 8, 2","8, 8, 4","2, 18"],answer:1,section:"Matter & Atoms"},
+  {q:"What determines which element an atom is?",options:["Number of neutrons","Number of electrons","Number of protons","Mass number"],answer:2,section:"Matter & Atoms"},
+  {q:"Who proposed the 'Solid Sphere' model in 1803?",options:["J.J. Thomson","Ernest Rutherford","John Dalton","Niels Bohr"],answer:2,section:"Atomic Models"},
+  {q:"Which model described the atom as a 'plum pudding' of positive charge with embedded electrons?",options:["Dalton's model","Thomson's model","Rutherford's model","Bohr's model"],answer:1,section:"Atomic Models"},
+  {q:"What experiment did Rutherford use to develop his nuclear model?",options:["Cathode ray experiment","Gold foil experiment","Flame test","Emission spectra experiment"],answer:1,section:"Atomic Models"},
+  {q:"What did Rutherford's gold foil experiment prove?",options:["Atoms are solid spheres","Electrons have negative charge","Most of the atom is empty space with a tiny dense nucleus","Electrons orbit in fixed energy levels"],answer:2,section:"Atomic Models"},
+  {q:"What was the main weakness of Rutherford's model?",options:["It ignored protons","It couldn't explain why electrons don't spiral into the nucleus","It didn't include neutrons","It was based on incorrect data"],answer:1,section:"Atomic Models"},
+  {q:"Niels Bohr's model proposed that electrons:",options:["Are embedded in positive charge","Move randomly around the nucleus","Move in fixed energy levels (orbits)","Are found in clouds of probability"],answer:2,section:"Atomic Models"},
+  {q:"What happens when an electron in Bohr's model absorbs energy?",options:["It is destroyed","It moves to a lower energy level","It moves to a higher energy level","It leaves the atom permanently"],answer:2,section:"Atomic Models"},
+  {q:"Which atomic model is considered most accurate today?",options:["Dalton's solid sphere","Thomson's plum pudding","Rutherford's nuclear model","Schrödinger's quantum model"],answer:3,section:"Atomic Models"},
+  {q:"In Schrödinger's model, where are electrons found?",options:["Fixed circular orbits","Clouds of probability around the nucleus","Inside the nucleus","In layers outside the atom"],answer:1,section:"Atomic Models"},
+  {q:"Nuclear fusion involves:",options:["A large nucleus splitting into smaller ones","Two small nuclei joining to form a larger one","An electron being emitted from the nucleus","Gamma rays being released"],answer:1,section:"Nuclear Reactions"},
+  {q:"Where does nuclear fusion naturally occur?",options:["Nuclear power stations","Inside stars like the Sun","Underground reactors","In radioactive waste"],answer:1,section:"Nuclear Reactions"},
+  {q:"Nuclear fission involves:",options:["Two nuclei joining together","An electron being released","A large nucleus splitting into smaller nuclei","Gamma radiation being absorbed"],answer:2,section:"Nuclear Reactions"},
+  {q:"What can the extra neutrons released in fission trigger?",options:["Fusion reaction","A chain reaction","Gamma decay","Beta emission"],answer:1,section:"Nuclear Reactions"},
+  {q:"Compared to chemical reactions, nuclear reactions release:",options:["Much less energy","The same amount of energy","Much more energy","No energy"],answer:2,section:"Nuclear Reactions"},
+  {q:"Nuclear fission is used in:",options:["Solar panels","Nuclear power stations","Wind turbines","Hydroelectric dams"],answer:1,section:"Nuclear Reactions"},
+  {q:"What are isotopes?",options:["Atoms of different elements with the same mass number","Atoms of the same element with different numbers of neutrons","Atoms with the same number of electrons and neutrons","Atoms of different elements with the same atomic number"],answer:1,section:"Radioisotopes"},
+  {q:"Carbon-12 and Carbon-14 are isotopes. What is the same about them?",options:["Mass number","Number of neutrons","Number of protons (atomic number)","Number of electrons in the outer shell only"],answer:2,section:"Radioisotopes"},
+  {q:"What makes a radioisotope unstable?",options:["Too many electrons","Incorrect number of protons or neutrons, or excess nuclear energy","Not enough protons","Being too small"],answer:1,section:"Radioisotopes"},
+  {q:"What does radioactive decay produce?",options:["New electrons only","Radiation in the form of energy or particles","More protons","New chemical compounds"],answer:1,section:"Radioisotopes"},
+  {q:"An alpha particle consists of:",options:["2 protons and 2 neutrons","1 proton and 1 neutron","An electron","High-energy electromagnetic radiation"],answer:0,section:"Radioisotopes"},
+  {q:"What is the charge of a beta particle?",options:["+2","+1","0","-1"],answer:3,section:"Radioisotopes"},
+  {q:"Gamma radiation is:",options:["A helium nucleus","An electron from the nucleus","High-energy electromagnetic radiation","A neutron"],answer:2,section:"Radioisotopes"},
+  {q:"Which type of radiation has the greatest penetrating power?",options:["Alpha","Beta","Gamma","They are all equal"],answer:2,section:"Radioisotopes"},
+  {q:"Alpha radiation can be stopped by:",options:["Lead","Aluminium","Paper","Concrete"],answer:2,section:"Radioisotopes"},
+  {q:"Which radiation type is used in smoke detectors?",options:["Beta","Gamma","Alpha","Neutron"],answer:2,section:"Radioisotopes"},
+  {q:"In alpha decay, the atomic number of the daughter nucleus is:",options:["The same as the parent","2 less than the parent","4 less than the parent","1 more than the parent"],answer:1,section:"Radioisotopes"},
+  {q:"In beta decay, a neutron converts to a proton. What happens to the atomic number?",options:["Decreases by 1","Stays the same","Increases by 1","Increases by 2"],answer:2,section:"Radioisotopes"},
+  {q:"What is the definition of half-life?",options:["The time for a radioactive sample to fully decay","The time for half of a radioactive sample to decay","Half the mass of a radioactive atom","The time for radiation to travel halfway"],answer:1,section:"Half-Life"},
+  {q:"A sample starts with 80g of a radioisotope. After 2 half-lives, how much remains?",options:["40g","20g","10g","5g"],answer:1,section:"Half-Life"},
+  {q:"What is the half-life of Carbon-14?",options:["5,730 years","4.47 billion years","5.27 years","15 hours"],answer:0,section:"Half-Life"},
+  {q:"A fossil contains 25% of its original Carbon-14. The half-life is 5,730 years. How old is it?",options:["5,730 years","11,460 years","17,190 years","22,920 years"],answer:1,section:"Half-Life"},
+  {q:"Which isotope would you use to date very ancient rocks (billions of years old)?",options:["Carbon-14","Fluorine-18","Sodium-24","Uranium-238"],answer:3,section:"Half-Life"},
+  {q:"Why is Fluorine-18 (half-life 109 minutes) suitable for PET scans but NOT for dating ancient artefacts?",options:["It is too expensive","Its half-life is too short to survive in ancient samples","It doesn't emit radiation","It is not radioactive enough"],answer:1,section:"Half-Life"},
+  {q:"As a radioactive sample decays over time, the amount of radioactive material:",options:["Stays constant","Increases","Decreases","Fluctuates randomly"],answer:2,section:"Half-Life"},
+  {q:"Which medical technique uses radioactive tracers to image how organs are working?",options:["X-ray","MRI","PET scan","Ultrasound"],answer:2,section:"Uses of Radioisotopes"},
+  {q:"Cobalt-60 is used in radiotherapy to:",options:["Image the brain","Treat cancer","Detect pipe leaks","Date fossils"],answer:1,section:"Uses of Radioisotopes"},
+  {q:"Gamma radiation is used in industry to:",options:["Power spacecraft","Detect cracks and faults in metal","Treat thyroid cancer","Measure blood flow"],answer:1,section:"Uses of Radioisotopes"},
+  {q:"Which of the following is an advantage of nuclear power over fossil fuels?",options:["It produces no waste at all","It releases less greenhouse gas","It is completely safe","It uses renewable fuel"],answer:1,section:"Uses of Radioisotopes"},
+  {q:"Radioactive tracers in environmental monitoring are used to:",options:["Generate electricity","Track pollution in rivers and oceans","Treat tumours","Date fossils"],answer:1,section:"Uses of Radioisotopes"},
+];
+
+let quizQuestions=[],currentQ=0,score=0,answers=[],selectedMode="all",answered=false;
+function shuffle(arr){return[...arr].sort(()=>Math.random()-0.5);}
+function goHome(){document.getElementById("home-screen").classList.remove("hidden");document.getElementById("quiz-screen").classList.add("hidden");document.getElementById("results-screen").classList.add("hidden");}
+function startQuiz(mode){selectedMode=mode;let pool=mode==="all"?ALL_QUESTIONS:ALL_QUESTIONS.filter(q=>q.section===mode);quizQuestions=shuffle(pool);currentQ=0;score=0;answers=[];answered=false;document.getElementById("home-screen").classList.add("hidden");document.getElementById("results-screen").classList.add("hidden");document.getElementById("quiz-screen").classList.remove("hidden");renderQuestion();}
+function retryQuiz(){startQuiz(selectedMode);}
+function renderQuestion(){answered=false;const q=quizQuestions[currentQ];const color=SECTION_COLORS[q.section]||"#06b6d4";document.getElementById("section-tag").textContent=q.section;document.getElementById("section-tag").style.color=color;document.getElementById("q-counter").textContent=`${currentQ+1} / ${quizQuestions.length}`;document.getElementById("progress-bar").style.width=`${(currentQ/quizQuestions.length)*100}%`;document.getElementById("score-badge").textContent=`✓ ${score} correct`;document.getElementById("question-text").textContent=q.q;document.getElementById("question-card").classList.remove("pop");const labels=["A","B","C","D"];let html="";q.options.forEach((opt,i)=>{html+=`<button class="option-btn" id="opt-${i}" onclick="handleAnswer(${i})">${labels[i]}. ${opt}</button>`;});document.getElementById("options-container").innerHTML=html;document.getElementById("next-btn").classList.add("hidden");}
+function handleAnswer(idx){if(answered)return;answered=true;const q=quizQuestions[currentQ];const correct=idx===q.answer;if(correct){score++;document.getElementById(`opt-${idx}`).classList.add("correct");document.getElementById("question-card").classList.add("pop");}else{document.getElementById(`opt-${idx}`).classList.add("wrong");document.getElementById(`opt-${q.answer}`).classList.add("correct");document.getElementById("options-container").classList.add("shake");setTimeout(()=>document.getElementById("options-container").classList.remove("shake"),500);}for(let i=0;i<q.options.length;i++){const btn=document.getElementById(`opt-${i}`);btn.disabled=true;if(i!==idx&&i!==q.answer)btn.classList.add("dim");}answers.push({q,chosen:idx,correct});document.getElementById("next-btn").textContent=(currentQ+1>=quizQuestions.length)?"See Results →":"Next →";document.getElementById("next-btn").classList.remove("hidden");}
+function nextQuestion(){if(currentQ+1>=quizQuestions.length){showResults();}else{currentQ++;renderQuestion();}}
+function showResults(){document.getElementById("quiz-screen").classList.add("hidden");document.getElementById("results-screen").classList.remove("hidden");const pct=Math.round((score/quizQuestions.length)*100);const grade=pct>=90?"⚛️ Nuclear Genius!":pct>=75?"🔬 Atomic Expert":pct>=60?"🧪 Science Student":"📚 Keep Studying!";const pctColor=pct>=80?"#10b981":pct>=60?"#f59e0b":"#ef4444";const emoji=pct>=80?"🏆":pct>=60?"🔬":"📚";document.getElementById("result-emoji").textContent=emoji;document.getElementById("result-grade").textContent=grade;document.getElementById("result-pct").textContent=pct+"%";document.getElementById("result-pct").style.color=pctColor;document.getElementById("result-sub").textContent=`${score} out of ${quizQuestions.length} correct`;const sections=[...new Set(ALL_QUESTIONS.map(q=>q.section))];let breakdownHtml="";sections.forEach(sec=>{const secAnswers=answers.filter(a=>a.q.section===sec);if(!secAnswers.length)return;const secScore=secAnswers.filter(a=>a.correct).length;const secPct=Math.round((secScore/secAnswers.length)*100);const col=SECTION_COLORS[sec]||"#06b6d4";breakdownHtml+=`<div class="flex-row"><span class="topic-label" style="color:${col}">${sec}</span><span style="font-size:15px;color:#64748b">${secScore}/${secAnswers.length}</span></div><div class="topic-bar-wrap"><div class="topic-bar" style="width:${secPct}%;background:${col}"></div></div>`;});document.getElementById("topic-breakdown").innerHTML=breakdownHtml;const wrong=answers.filter(a=>!a.correct);if(wrong.length>0){document.getElementById("wrong-answers-section").classList.remove("hidden");let wrongHtml="";wrong.forEach(a=>{wrongHtml+=`<div class="wrong-item"><p class="wrong-q">${a.q.q}</p><p class="wrong-yours">✗ Your answer: ${a.q.options[a.chosen]}</p><p class="wrong-correct">✓ Correct: ${a.q.options[a.q.answer]}</p></div>`;});document.getElementById("wrong-answers-list").innerHTML=wrongHtml;}else{document.getElementById("wrong-answers-section").classList.add("hidden");}}
+window.onload=function(){const sections=[...new Set(ALL_QUESTIONS.map(q=>q.section))];const wrap=document.getElementById("section-btns");sections.forEach(sec=>{const col=SECTION_COLORS[sec]||"#06b6d4";const btn=document.createElement("button");btn.className="section-btn";btn.textContent=sec;btn.style.background=col+"22";btn.style.color=col;btn.style.border=`1px solid ${col}55`;btn.onclick=()=>startQuiz(sec);wrap.appendChild(btn);});};
+</script>
+</body>
+</html>
